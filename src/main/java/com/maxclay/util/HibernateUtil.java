@@ -5,6 +5,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 /**
+ * Helper class which establishes and adjusts database connection.
+ *
  * @author maxclay
  */
 public final class HibernateUtil {
@@ -21,7 +23,8 @@ public final class HibernateUtil {
         }
     }
 
-    private HibernateUtil() {}
+    private HibernateUtil() {
+    }
 
     public static Session openSession() {
         return SESSION_FACTORY.openSession();

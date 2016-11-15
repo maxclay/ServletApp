@@ -16,6 +16,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import static com.maxclay.util.HttpStatus.*;
+
 /**
  * TODO review, add validation
  *
@@ -23,7 +25,6 @@ import java.io.PrintWriter;
  */
 public class VehiclesServlet extends HttpServlet {
 
-    //TODO not found
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -39,12 +40,13 @@ public class VehiclesServlet extends HttpServlet {
             if (result != null) {
                 out.print(gson.toJson(result));
             } else {
-                response.setStatus(404);
+                response.setStatus(NOT_FOUND);
             }
 
         } catch (InvalidURIException ex) {
+
             System.err.println("Invalid URI: " + ex);
-            response.setStatus(400);
+            response.setStatus(BAD_REQUEST);
         }
 
     }
@@ -63,10 +65,11 @@ public class VehiclesServlet extends HttpServlet {
             Vehicle vehicle = gson.fromJson(reader, Vehicle.class);
             vehicleService.save(vehicle);
             out.println(gson.toJson(vehicle));
-            response.setStatus(201);
+            response.setStatus(CREATED);
         } catch (JsonSyntaxException ex) {
+
             System.err.println("Invalid JSON format: " + ex);
-            response.setStatus(400);
+            response.setStatus(BAD_REQUEST);
         }
 
     }

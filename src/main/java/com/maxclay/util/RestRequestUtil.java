@@ -5,24 +5,27 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * Helper class which provides method for retrieving resource identifier from instance of servlet request.
+ *
  * @author maxclay
  */
 public final class RestRequestUtil {
 
-    //TODO change to private
-    public static final Pattern ID_PATTERN = Pattern.compile("/([0-9]+)");
+    private static final Pattern ID_PATTERN = Pattern.compile("/([0-9]+)");
 
-    private RestRequestUtil() {}
+    private RestRequestUtil() {
+    }
 
     /**
      * Retrieves resource identifier, that specified as path variable from given request object.
+     *
      * @param request servlet request.
      * @return retrieved id of resource or 'null' if id is not specified(in case of '/' request).
      * @throws InvalidURIException thrown in case of invalid URI that does not represent resource identifier.
      */
     public static Long getId(HttpServletRequest request) throws InvalidURIException {
 
-        if(request == null) {
+        if (request == null) {
             throw new IllegalArgumentException("Request could not be null");
         }
 

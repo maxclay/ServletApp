@@ -7,6 +7,11 @@ import com.maxclay.service.VehicleService;
 import java.util.List;
 
 /**
+ * Implementation of {@link com.maxclay.service.VehicleService VehicleService} interface.
+ * Operates on the instances of {@link com.maxclay.model.Vehicle Vehicle} class.
+ * Uses {@link com.maxclay.dao.VehicleDao VehicleDao} to update instances, persist and retrieve them into/from
+ * datasource.
+ *
  * @author maxclay
  */
 public class VehicleServiceImpl implements VehicleService {
