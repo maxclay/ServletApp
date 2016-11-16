@@ -2,112 +2,43 @@ package com.maxclay.dao.impl;
 
 import com.maxclay.dao.VehicleDao;
 import com.maxclay.model.Vehicle;
-import com.maxclay.util.HibernateUtil;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
-import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
 /**
- * TODO review
- *
  * @author maxclay
  */
 public class VehicleDaoImpl implements VehicleDao {
 
+    private GeneralDao<Vehicle> generalDao;
+
+    public VehicleDaoImpl() {
+        generalDao = new GeneralDao<Vehicle>();
+    }
+
     public Vehicle save(Vehicle vehicle) {
-
-        Session session = HibernateUtil.openSession();
-        Transaction tx = null;
-        try {
-
-            tx = session.getTransaction();
-            tx.begin();
-            session.saveOrUpdate(vehicle);
-            tx.commit();
-
-        } catch (Exception e) {
-
-            if (tx != null) {
-                tx.rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
-
-        return vehicle;
+        return generalDao.save(vehicle);
     }
 
     public Vehicle get(Long id) {
-
-        Session session = HibernateUtil.openSession();
-        Transaction tx = null;
-        Vehicle vehicle = null;
-        try {
-
-            tx = session.getTransaction();
-            tx.begin();
-            vehicle = session.get(Vehicle.class, id);
-            tx.commit();
-        } catch (Exception e) {
-
-            if (tx != null) {
-                tx.rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
-
-        return vehicle;
+        return generalDao.get(id, Vehicle.class);
     }
 
     public List<Vehicle> getAll() {
-
-        Session session = HibernateUtil.openSession();
-        CriteriaQuery<Vehicle> query = session.getCriteriaBuilder().createQuery(Vehicle.class);
-        query.select(query.from(Vehicle.class));
-        Query<Vehicle> q = session.createQuery(query);
-        List<Vehicle> vehicles = q.list();
-        session.close();
-
-        return vehicles;
+        return generalDao.getAll(Vehicle.class);
     }
 
 
     public void delete(Long id) {
+        generalDao.delete(id, Vehicle.class);
+    }
 
-        Session session = HibernateUtil.openSession();
-        Transaction tx = null;
-        try {
-
-            tx = session.getTransaction();
-            tx.begin();
-            Vehicle vehicle = session.load(Vehicle.class, id);
-            session.delete(vehicle);
-            tx.commit();
-        } catch (Exception e) {
-
-            if (tx != null) {
-                tx.rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
-
+    public void deleteAll() {
+        generalDao.deleteAll(Vehicle.class);
     }
 
     public boolean exists(Long id) {
-
-        Session session = HibernateUtil.openSession();
-        Vehicle vehicle = session.get(Vehicle.class, id);
-        session.close();
-
-        return vehicle != null;
+        return generalDao.exists(id, Vehicle.class);
     }
 
 }

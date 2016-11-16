@@ -17,6 +17,8 @@ public interface VehicleDao {
 
     void delete(Long id);
 
+    void deleteAll();
+
     boolean exists(Long id);
 
 }

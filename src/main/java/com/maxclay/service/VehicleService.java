@@ -23,6 +23,8 @@ public interface VehicleService {
 
     void delete(Vehicle vehicle);
 
+    void deleteAll();
+
     boolean exists(Long id);
 
     boolean exists(Vehicle vehicle);

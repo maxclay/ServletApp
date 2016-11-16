@@ -47,6 +47,10 @@ public class VehicleServiceImpl implements VehicleService {
         delete(vehicle.getId());
     }
 
+    public void deleteAll() {
+        vehicleDao.deleteAll();
+    }
+
     public boolean exists(Long id) {
         return vehicleDao.exists(id);
     }

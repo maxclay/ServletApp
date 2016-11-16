@@ -7,8 +7,10 @@ import java.io.Serializable;
  * @author maxclay
  */
 @Entity
-@Table(name = "VEHICLE")
+@Table(name = Vehicle.TABLE_NAME)
 public class Vehicle implements Serializable {
+
+    public static final String TABLE_NAME = "VEHICLE";
 
     @Id
     @GeneratedValue
