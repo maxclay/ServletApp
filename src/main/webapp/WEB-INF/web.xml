@@ -14,4 +14,14 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
         <url-pattern>/api/vehicles/*</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>vendorsServlet</servlet-name>
+        <servlet-class>com.maxclay.api.VendorsServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>vendorsServlet</servlet-name>
+        <url-pattern>/api/vendors/*</url-pattern>
+    </servlet-mapping>
+
 </web-app>

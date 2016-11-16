@@ -40,6 +40,10 @@ public class VehicleServiceImpl implements VehicleService {
 
     public void delete(Vehicle vehicle) {
 
+        if (vehicle == null) {
+            throw new IllegalArgumentException("Vehicle could not be null");
+        }
+
         if (vehicle.getId() == null) {
             throw new IllegalArgumentException("Vehicle's identifier could not be null");
         }
@@ -56,6 +60,10 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     public boolean exists(Vehicle vehicle) {
+
+        if (vehicle == null) {
+            throw new IllegalArgumentException("Vehicle could not be null");
+        }
 
         if (vehicle.getId() == null) {
             throw new IllegalArgumentException("Vehicle's identifier could not be null");

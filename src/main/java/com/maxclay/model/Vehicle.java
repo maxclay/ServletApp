@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Table(name = Vehicle.TABLE_NAME)
 public class Vehicle implements Serializable {
 
-    public static final String TABLE_NAME = "VEHICLE";
+    public static final String TABLE_NAME = "Vehicle";
 
     @Id
     @GeneratedValue
