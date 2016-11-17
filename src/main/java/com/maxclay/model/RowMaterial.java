@@ -23,7 +23,7 @@ public class RowMaterial {
     private Double weight;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "vendor_id")
+    @JoinColumn(name = "vendor")
     private Vendor vendor;
 
     public Long getId() {

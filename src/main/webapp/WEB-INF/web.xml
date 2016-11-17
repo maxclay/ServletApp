@@ -34,4 +34,14 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
         <url-pattern>/api/materials/*</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>authenticationServlet</servlet-name>
+        <servlet-class>com.maxclay.api.AuthenticationServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>authenticationServlet</servlet-name>
+        <url-pattern>/authentication</url-pattern>
+    </servlet-mapping>
+
 </web-app>

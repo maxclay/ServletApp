@@ -20,7 +20,7 @@ public class Vehicle implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "carryingCapacity")
+    @Column(name = "carrying_capacity")
     private Double carryingCapacity;
 
     @Column(name = "mileage")
