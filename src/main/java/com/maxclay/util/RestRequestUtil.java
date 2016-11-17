@@ -1,5 +1,7 @@
 package com.maxclay.util;
 
+import com.maxclay.exception.InvalidURIException;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -2,10 +2,13 @@ package com.maxclay.api;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.maxclay.dao.impl.RowMaterialDaoImpl;
 import com.maxclay.dao.impl.VendorDaoImpl;
-import com.maxclay.model.Vendor;
-import com.maxclay.service.VendorService;
-import com.maxclay.service.impl.VendorServiceImpl;
+import com.maxclay.dto.RowMaterialDto;
+import com.maxclay.exception.ResourceNotFoundException;
+import com.maxclay.model.RowMaterial;
+import com.maxclay.service.RowMaterialService;
+import com.maxclay.service.impl.RowMaterialServiceImpl;
 import com.maxclay.exception.InvalidURIException;
 import com.maxclay.util.RestRequestUtil;
 
@@ -16,15 +19,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import static com.maxclay.util.HttpStatus.*;
+import static com.maxclay.util.HttpStatus.BAD_REQUEST;
+import static com.maxclay.util.HttpStatus.CREATED;
+import static com.maxclay.util.HttpStatus.NOT_FOUND;
 
 /**
- * TODO review, add validation, add interceptor to do common things like setting content type, exceptions handling(?),
- * TODO get rid of boilerplate code
- *
  * @author maxclay
  */
-public class VendorsServlet extends HttpServlet {
+public class RowMaterialsServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -32,12 +34,12 @@ public class VendorsServlet extends HttpServlet {
         Gson gson = new Gson();
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-
-        VendorService vendorService = new VendorServiceImpl(new VendorDaoImpl());
+        RowMaterialService rowMaterialsService =
+                new RowMaterialServiceImpl(new RowMaterialDaoImpl(), new VendorDaoImpl());
         try {
 
-            Long vendorId = RestRequestUtil.getId(request);
-            Object result = (vendorId != null) ? vendorService.get(vendorId) : vendorService.getAll();
+            Long rowMaterialId = RestRequestUtil.getId(request);
+            Object result = (rowMaterialId != null) ? rowMaterialsService.get(rowMaterialId) : rowMaterialsService.getAll();
             if (result != null) {
                 out.print(gson.toJson(result));
             } else {
@@ -58,17 +60,13 @@ public class VendorsServlet extends HttpServlet {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         BufferedReader reader = request.getReader();
-        VendorService vendorService = new VendorServiceImpl(new VendorDaoImpl());
+        RowMaterialService rowMaterialsService =
+                new RowMaterialServiceImpl(new RowMaterialDaoImpl(), new VendorDaoImpl());
         try {
 
-            Vendor vendor = gson.fromJson(reader, Vendor.class);
-            if (vendor.getId() != null) {
-                response.setStatus(BAD_REQUEST);
-                return;
-            }
-
-            vendorService.save(vendor);
-            out.println(gson.toJson(vendor));
+            RowMaterialDto rowMaterialDto = gson.fromJson(reader, RowMaterialDto.class);
+            RowMaterial rowMaterial = rowMaterialsService.save(rowMaterialDto);
+            out.println(gson.toJson(rowMaterial));
             response.setStatus(CREATED);
         } catch (JsonSyntaxException ex) {
 
@@ -78,6 +76,14 @@ public class VendorsServlet extends HttpServlet {
 
             System.err.println("Empty request body: " + ex);
             response.setStatus(BAD_REQUEST);
+        } catch (IllegalArgumentException ex) {
+
+            System.err.println("Invalid request body: " + ex);
+            response.setStatus(BAD_REQUEST);
+        } catch (ResourceNotFoundException ex) {
+
+            System.err.println("Resource not found: " + ex);
+            response.setStatus(NOT_FOUND);
         }
     }
 
@@ -88,30 +94,14 @@ public class VendorsServlet extends HttpServlet {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         BufferedReader reader = request.getReader();
-        VendorService vendorService = new VendorServiceImpl(new VendorDaoImpl());
+        RowMaterialService rowMaterialsService =
+                new RowMaterialServiceImpl(new RowMaterialDaoImpl(), new VendorDaoImpl());
         try {
 
             Long pathVariableId = RestRequestUtil.getId(request);
-            Vendor vendor = gson.fromJson(reader, Vendor.class);
-            boolean identifiersDontMatch =
-                    (pathVariableId != null && vendor.getId() != null && !pathVariableId.equals(vendor.getId()));
-
-            if (pathVariableId == null || identifiersDontMatch) {
-                response.setStatus(BAD_REQUEST);
-                return;
-            }
-
-            if (!vendorService.exists(pathVariableId)) {
-                response.setStatus(NOT_FOUND);
-                return;
-            }
-
-            if (vendor.getId() == null) {
-                vendor.setId(pathVariableId);
-            }
-
-            vendorService.save(vendor);
-            out.println(gson.toJson(vendor));
+            RowMaterialDto rowMaterialDto = gson.fromJson(reader, RowMaterialDto.class);
+            RowMaterial rowMaterial = rowMaterialsService.save(pathVariableId, rowMaterialDto);
+            out.println(gson.toJson(rowMaterial));
 
         } catch (InvalidURIException ex) {
 
@@ -121,6 +111,14 @@ public class VendorsServlet extends HttpServlet {
 
             System.err.println("Empty request body: " + ex);
             response.setStatus(BAD_REQUEST);
+        } catch (IllegalArgumentException ex) {
+
+            System.err.println("Invalid request body: " + ex);
+            response.setStatus(BAD_REQUEST);
+        } catch (ResourceNotFoundException ex) {
+
+            System.err.println("Resource not found: " + ex);
+            response.setStatus(NOT_FOUND);
         }
     }
 
@@ -128,20 +126,22 @@ public class VendorsServlet extends HttpServlet {
     public void doDelete(HttpServletRequest request, HttpServletResponse response) {
 
         response.setContentType("application/json");
-        VendorService vendorService = new VendorServiceImpl(new VendorDaoImpl());
+        RowMaterialService rowMaterialsService =
+                new RowMaterialServiceImpl(new RowMaterialDaoImpl(), new VendorDaoImpl());
         try {
 
-            Long vendorId = RestRequestUtil.getId(request);
-            if (vendorId != null) {
+            Long rowMaterialId = RestRequestUtil.getId(request);
+            if (rowMaterialId != null) {
 
-                if (!vendorService.exists(vendorId)) {
+                //TODO move this checking to service, throw ResourceNotFoundException
+                if (!rowMaterialsService.exists(rowMaterialId)) {
                     response.setStatus(NOT_FOUND);
                     return;
                 }
-                vendorService.delete(vendorId);
+                rowMaterialsService.delete(rowMaterialId);
 
             } else {
-                vendorService.deleteAll();
+                rowMaterialsService.deleteAll();
             }
 
         } catch (InvalidURIException ex) {

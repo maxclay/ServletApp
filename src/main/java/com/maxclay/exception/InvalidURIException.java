@@ -1,4 +1,4 @@
-package com.maxclay.util;
+package com.maxclay.exception;
 
 /**
  * Represents exception that can be thrown in case of invalid format of processed URI.

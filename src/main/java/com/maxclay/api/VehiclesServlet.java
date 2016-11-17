@@ -6,7 +6,7 @@ import com.maxclay.dao.impl.VehicleDaoImpl;
 import com.maxclay.model.Vehicle;
 import com.maxclay.service.VehicleService;
 import com.maxclay.service.impl.VehicleServiceImpl;
-import com.maxclay.util.InvalidURIException;
+import com.maxclay.exception.InvalidURIException;
 import com.maxclay.util.RestRequestUtil;
 
 import javax.servlet.http.HttpServlet;

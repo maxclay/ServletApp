@@ -24,4 +24,14 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
         <url-pattern>/api/vendors/*</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>rowMaterialsServlet</servlet-name>
+        <servlet-class>com.maxclay.api.RowMaterialsServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>rowMaterialsServlet</servlet-name>
+        <url-pattern>/api/materials/*</url-pattern>
+    </servlet-mapping>
+
 </web-app>
