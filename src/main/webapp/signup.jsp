@@ -115,7 +115,7 @@
                     <div class="form-group">
                         <label>Name</label>
                         <input class="form-control" type="text" id="name">
-                        <span class="text-danger">${userNameError} <% session.getAttribute("userNameError"); %> </span>
+                        <span class="text-danger">${userNameError} <% session.removeAttribute("userNameError"); %> </span>
                     </div>
                     <div class="form-group">
                         <label>Email</label>
