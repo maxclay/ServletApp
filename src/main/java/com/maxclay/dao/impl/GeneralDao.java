@@ -126,10 +126,6 @@ public class GeneralDao<T> {
 
     public boolean exists(Long id, Class<T> clazz) {
 
-        Session session = HibernateUtil.openSession();
-        T instance = session.get(clazz, id);
-        session.close();
-
-        return instance != null;
+        return get(id, clazz) != null;
     }
 }

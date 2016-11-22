@@ -37,7 +37,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="index.html">Milk Factory</a>
+            <a class="navbar-brand" href="./">Milk Factory</a>
         </div>
         <!-- /.navbar-header -->
         <ul class="nav navbar-top-links navbar-right">
@@ -48,12 +48,15 @@
                 </a>
                 <ul class="dropdown-menu dropdown-user">
 
-                    <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                    <li><a href="logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                     </li>
                 </ul>
                 <!-- /.dropdown-user -->
             </li>
             <!-- /.dropdown -->
+            <%--TODO check if user authenticated --%>
+            <a href="login" class="navbar-brand">Login</a>
+            <a href="signup" class="navbar-brand">Sign up</a>
         </ul>
         <!-- /.navbar-top-links -->
 
@@ -77,13 +80,13 @@
                         <a href="#"><i class="fa fa-table fa-fw"></i> Tables<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="/vendors">Vendors</a>
+                                <a href="vendors">Vendors</a>
                             </li>
                             <li>
-                                <a href="/vehicles">Vehicles</a>
+                                <a href="vehicles">Vehicles</a>
                             </li>
                             <li>
-                                <a href="/materials">Raw materials</a>
+                                <a href="materials">Raw materials</a>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->
@@ -92,18 +95,18 @@
                         <a href="#"><i class="fa fa-wrench fa-fw"></i> New record<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="new-vendor">Vendor</a>
+                                <a href="create-vendor">Vendor</a>
                             </li>
                             <li>
-                                <a href="new-vehicle">Vehicle</a>
+                                <a href="create-vehicle">Vehicle</a>
                             </li>
                             <li>
-                                <a href="new-material">Raw material</a>
+                                <a href="create-material">Raw material</a>
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <a href="/function"><i class="fa fa-magic fa-fw"></i> Function<span></span></a>
+                        <a href="function"><i class="fa fa-magic fa-fw"></i> Function<span></span></a>
                     </li>
 
                 </ul>
