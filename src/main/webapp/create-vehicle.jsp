@@ -1,3 +1,7 @@
+<% if (session.getAttribute("username") == null) {
+    response.sendRedirect("login");
+}
+%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title> Login</title>
+    <title> Create vehicle</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="./resources/css/bootstrap.min.css" rel="stylesheet">
@@ -39,8 +43,17 @@
         </div>
 
         <ul class="nav navbar-top-links navbar-right">
-            <a href="login" class="navbar-brand">Login</a>
-            <a href="signup" class="navbar-brand">Sign up</a>
+            <!-- /.dropdown -->
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
+                    <b>${username}</b> <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="authentication"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                    </li>
+                </ul>
+            </li>
+            <!-- /.dropdown -->
         </ul>
         <!-- /.navbar-top-links -->
 
@@ -89,7 +102,6 @@
                             </li>
                         </ul>
 
-
                     </li>
 
                 </ul>
@@ -101,39 +113,30 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Login</h1>
+                <h1 class="page-header">Vehicle</h1>
                 <h4 id="info"></h4>
             </div>
             <!-- /.col-lg-12 -->
         </div>
         <div class="row">
             <div class="col-lg-4">
-                <form method="post" action="./authentication">
-                    <fieldset class="col-lg-10">
-
-                        <% if (session.getAttribute("error") != null) { %>
-                        <div class="form-group">
-                            <div class="alert alert-danger">
-                                ${error} <% session.removeAttribute("error"); %>
-                            </div>
-                        </div>
-                        <% }%>
-
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input class="form-control" type="email" id="email" name="email">
-                            <span class="text-danger">${emailError} <% session.removeAttribute("emailError"); %> </span>
-                        </div>
-                        <div class="form-group">
-                            <label>Password</label>
-                            <input class="form-control" type="password" id="password" name="password">
-                            <span class="text-danger">${passwordError} <% session.removeAttribute("passwordError"); %> </span>
-                        </div>
-                        <div><br>
-                            <button type="submit" class="btn btn-outline btn-primary" id="sign-up-btn">Login</button>
-                        </div>
-                    </fieldset>
-                </form>
+                <div class="form-group">
+                    <label>Name</label>
+                    <input class="form-control" type="text" id="name">
+                </div>
+                <div class="form-group">
+                    <label>Carrying capacity</label>
+                    <input class="form-control" type="number" id="carrying_capacity">
+                </div>
+                <div class="form-group">
+                    <label>Mileage</label>
+                    <input class="form-control" type="number" id="mileage">
+                </div>
+                <div><br>
+                    <button onclick="create();" type="button" class="btn btn-outline btn-primary"
+                            id="create-vehicle-btn">Create
+                    </button>
+                </div>
             </div>
             <!-- /.col-lg-12 -->
         </div>
@@ -156,5 +159,36 @@
 <!-- Custom Theme JavaScript -->
 <script src="./resources/js/sb-admin-2.js"></script>
 
+<%--TODO move to separate file--%>
+<script type="text/javascript">
+
+    function create() {
+        createVehicle(function () {
+            location.reload();
+        })
+    }
+
+    var createVehicle = function (callback) {
+
+        var vehicleData = {
+            "name": $("#name").val(),
+            "carryingCapacity": $("#carrying_capacity").val() || 0,
+            "mileage": $("#mileage").val() || 0
+        };
+        $.ajax({
+            type: 'POST',
+            crossDomain: true,
+            url: './api/vehicles/',
+            contentType: "application/json",
+            dataType: 'json',
+            data: JSON.stringify(vehicleData),
+            complete: function (createdVehicle) {
+                if (callback) {
+                    callback(createdVehicle);
+                }
+            }
+        });
+    }
+</script>
 </body>
 </html>

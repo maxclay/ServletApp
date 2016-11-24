@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title> Create vendor</title>
+    <title>Vehicles</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="./resources/css/bootstrap.min.css" rel="stylesheet">
@@ -21,12 +21,14 @@
     <!-- MetisMenu CSS -->
     <link href="./resources/css/metisMenu.min.css" rel="stylesheet">
 
+    <!-- DataTables CSS -->
+    <link href="./resources/css/dataTables.bootstrap.css" rel="stylesheet">
+
     <!-- Custom CSS -->
     <link href="./resources/css/sb-admin-2.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="./resources/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
 </head>
 <body>
 <div id="wrapper">
@@ -41,7 +43,7 @@
             </button>
             <a class="navbar-brand" href="./">Milk Factory</a>
         </div>
-
+        <!-- /.navbar-header -->
         <ul class="nav navbar-top-links navbar-right">
             <!-- /.dropdown -->
             <li class="dropdown">
@@ -88,7 +90,6 @@
                         <!-- /.nav-second-level -->
                     </li>
                     <li>
-
                         <a href="#"><i class="fa fa-wrench fa-fw"></i> New record<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
@@ -102,6 +103,7 @@
                             </li>
                         </ul>
                     </li>
+
                 </ul>
             </div>
             <!-- /.sidebar-collapse -->
@@ -111,44 +113,45 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Vendor</h1>
-                <h4 id="info"></h4>
-            </div>
-            <!-- /.col-lg-12 -->
-        </div>
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="form-group">
-                    <label>First name</label>
-                    <input class="form-control" type="text" id="first_name">
-                </div>
-                <div class="form-group">
-                    <label>Last name</label>
-                    <input class="form-control" type="text" id="last_name">
-                </div>
-                <div class="form-group">
-                    <label>Address</label>
-                    <input class="form-control" type="text" id="address">
-                </div>
-                <div class="form-group">
-                    <label>Phone</label>
-                    <input class="form-control" type="tel" id="phone">
-                </div>
-                <div><br>
-                    <button onclick="create();" type="button" class="btn btn-outline btn-primary"
-                            id="create-vendor-btn">Create
-                    </button>
-                </div>
+                <h1 class="page-header">Vehicles</h1>
             </div>
             <!-- /.col-lg-12 -->
         </div>
         <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="dataTable_wrapper">
+
+                            <table class="table table-striped table-bordered table-hover" id="vehicles-table">
+                                <thead>
+                                <tr>
+                                    <th class="col-lg-1"></th>
+                                    <th>Name</th>
+                                    <th>Carrying Capacity</th>
+                                    <th>Mileage</th>
+                                    <th></th>
+                                    <th></th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
-    <!-- /#page-wrapper -->
-
 </div>
-<!-- /#wrapper -->
 
+<!-- /#wrapper -->
 <!-- jQuery -->
 <script src="./resources/js/jquery.min.js"></script>
 
@@ -158,39 +161,110 @@
 <!-- Metis Menu Plugin JavaScript -->
 <script src="./resources/js/metisMenu.min.js"></script>
 
+<!-- DataTables JavaScript -->
+<script src="./resources/js/jquery.dataTables.min.js"></script>
+<script src="./resources/js/dataTables.bootstrap.min.js"></script>
+
 <!-- Custom Theme JavaScript -->
 <script src="./resources/js/sb-admin-2.js"></script>
 
 <%--TODO move to separate file--%>
 <script type="text/javascript">
 
-    function create() {
-        createVendor(function () {
-            location.reload();
-        })
-    }
+    var table;
+    $(document).ready(function () {
+        table = $('#vehicles-table').DataTable({
+            responsive: true
+        });
+        fillTable();
+    });
 
-    var createVendor = function (callback) {
-        var vendorData = {
-            "firstName": $("#first_name").val(),
-            "lastName": $("#last_name").val(),
-            "address": $("#address").val(),
-            "phone": $("#phone").val()
-        };
+    function fillTable() {
         $.ajax({
-            type: 'POST',
+            type: 'GET',
             crossDomain: true,
-            url: './api/vendors',
-            contentType: "application/json",
+            url: './api/vehicles/',
             dataType: 'json',
-            data: JSON.stringify(vendorData),
-            complete: function (createdVendor) {
-                if (callback) {
-                    callback(createdVendor);
+            complete: function (response) {
+
+                var vehicles = response.responseJSON;
+
+                for (var index = 0; index < vehicles.length; index++) {
+                    table.row.add(
+                            [
+                                vehicles[index].id,
+                                vehicles[index].name || "",
+                                vehicles[index].carryingCapacity || "",
+                                vehicles[index].mileage || "",
+                                "<button type='button' class='btn btn-outline btn-success' onclick='editVehicle(" + vehicles[index].id + ");'>Edit</button>",
+                                "<button type='button' class='btn btn-outline btn-danger' onclick='deleteVehicle(" + vehicles[index].id + ");'>Delete</button>"
+                            ]
+                    ).id(index);
                 }
+                table.draw();
             }
         });
     }
+
+    function editVehicle(id) {
+        var rowToEdit = table.row(findRowIndexByVehicle(id));
+        var rowData = rowToEdit.data();
+        rowData[1] = '<input type="text" class="form-control" style="width: 120px;" id="name' + id + '" value="' + (rowData[1] || '') + '"/>';
+        rowData[2] = '<input type="text" class="form-control" style="width: 120px;" id="carryingCapacity' + id + '" value="' + (rowData[2] || '') + '"/>';
+        rowData[3] = '<input type="text" class="form-control " style="width: 120px;" id="mileage' + id + '" value="' + (rowData[3] || '') + '"/>';
+        rowData[4] = '<button type="button" class="btn btn-outline btn-warning" onclick=confirmEdition(' + id + ');>Confirm</button>';
+        rowToEdit.data(rowData);
+    }
+
+    function findRowIndexByVehicle(vehicle_id) {
+        var res;
+        table.rows().every(function () {
+            if (this.data()[0] == vehicle_id) {
+                res = this.index();
+                // return from 'every()' function
+                return false;
+            }
+        });
+        return res;
+    }
+
+    var confirmEdition = function (id) {
+        var newData = {
+            "name": $("#name" + id).val(),
+            "carryingCapacity": $("#carryingCapacity" + id).val(),
+            "mileage": $("#mileage" + id).val()
+        };
+        $.ajax({
+            type: 'PUT',
+            crossDomain: true,
+            url: './api/vehicles/' + id,
+            contentType: "application/json",
+            dataType: 'json',
+            data: JSON.stringify(newData),
+            complete: function () {
+                var rowToEdit = table.row(findRowIndexByVehicle(id));
+                var rowData = rowToEdit.data();
+                rowData[1] = newData.name;
+                rowData[2] = newData.carryingCapacity;
+                rowData[3] = newData.mileage;
+                rowData[4] = "<button type='button' class='btn btn-outline btn-success' onclick='editVehicle(" + id + ");'>Edit</button>";
+                rowToEdit.data(rowData).draw();
+            }
+        });
+    }
+
+    var deleteVehicle = function (id) {
+        $.ajax({
+            type: 'DELETE',
+            url: './api/vehicles/' + id,
+            complete: function () {
+                table.row(findRowIndexByVehicle(id)).remove();
+                table.draw();
+            }
+        });
+    }
+
 </script>
+
 </body>
 </html>

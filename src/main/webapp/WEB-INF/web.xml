@@ -94,4 +94,24 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
         <url-pattern>/signup</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>Vehicles</servlet-name>
+        <jsp-file>/vehicles.jsp</jsp-file>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Vehicles</servlet-name>
+        <url-pattern>/vehicles</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>VehiclesForm</servlet-name>
+        <jsp-file>/create-vehicle.jsp</jsp-file>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>VehiclesForm</servlet-name>
+        <url-pattern>/create-vehicle</url-pattern>
+    </servlet-mapping>
+
 </web-app>

@@ -91,9 +91,6 @@
 
 
                     </li>
-                    <li>
-                        <a href="function"><i class="fa fa-magic fa-fw"></i> Function<span></span></a>
-                    </li>
 
                 </ul>
             </div>
