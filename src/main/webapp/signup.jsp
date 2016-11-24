@@ -112,26 +112,40 @@
         <div class="row">
             <div class="col-lg-4">
                 <form method="post" action="./authentication">
-                    <div class="form-group">
-                        <label>Name</label>
-                        <input class="form-control" type="text" id="name">
-                        <span class="text-danger">${userNameError} <% session.removeAttribute("userNameError"); %> </span>
-                    </div>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input class="form-control" type="email" id="email">
-                    </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input class="form-control" type="password" id="password">
-                    </div>
-                    <div class="form-group">
-                        <label>Repeat password</label>
-                        <input class="form-control" type="password" id="repeat_password">
-                    </div>
-                    <div><br>
-                        <button class="btn btn-outline btn-primary" id="sign-up-btn">Sign up</button>
-                    </div>
+                    <fieldset class="col-lg-10">
+
+                        <% if (session.getAttribute("error") != null) { %>
+                        <div class="form-group">
+                            <div class="alert alert-danger">
+                                ${error} <% session.removeAttribute("error"); %>
+                            </div>
+                        </div>
+                        <% }%>
+
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input class="form-control" type="text" id="name" name="name">
+                            <span class="text-danger">${userNameError} <% session.removeAttribute("userNameError"); %> </span>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input class="form-control" type="email" id="email" name="email">
+                            <span class="text-danger">${emailError} <% session.removeAttribute("emailError"); %> </span>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input class="form-control" type="password" id="password" name="password">
+                            <span class="text-danger">${passwordError} <% session.removeAttribute("passwordError"); %> </span>
+                        </div>
+                        <div class="form-group">
+                            <label>Repeat password</label>
+                            <input class="form-control" type="password" id="repeat_password" name="repeat_password">
+                            <span class="text-danger">${repeatPasswordError} <% session.removeAttribute("repeatPasswordError"); %> </span>
+                        </div>
+                        <div><br>
+                            <button type="submit" class="btn btn-outline btn-primary" id="sign-up-btn">Sign up</button>
+                        </div>
+                    </fieldset>
                 </form>
             </div>
             <!-- /.col-lg-12 -->
