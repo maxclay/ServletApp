@@ -35,6 +35,16 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>registrationServlet</servlet-name>
+        <servlet-class>com.maxclay.api.RegistrationServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>registrationServlet</servlet-name>
+        <url-pattern>/registration</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>authenticationServlet</servlet-name>
         <servlet-class>com.maxclay.api.AuthenticationServlet</servlet-class>
     </servlet>

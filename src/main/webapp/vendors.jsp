@@ -1,3 +1,7 @@
+<% if (session.getAttribute("username") == null) {
+    response.sendRedirect("login");
+}
+%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -48,7 +52,7 @@
                 </a>
                 <ul class="dropdown-menu dropdown-user">
 
-                    <li><a href="logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                    <li><a href="authentication"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                     </li>
                 </ul>
                 <!-- /.dropdown-user -->

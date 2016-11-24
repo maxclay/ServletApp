@@ -50,11 +50,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getByEmail(String email) {
 
-        Optional<User> userOptional = userDao.getByEmail(email);
-        if(!userOptional.isPresent()) {
+        User user = userDao.getByEmail(email);
+        if(user == null) {
             throw new ResourceNotFoundException("User not found");
         }
 
-        return userOptional.get();
+        return user;
     }
 }

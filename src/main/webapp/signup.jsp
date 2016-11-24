@@ -111,7 +111,7 @@
         </div>
         <div class="row">
             <div class="col-lg-4">
-                <form method="post" action="./authentication">
+                <form method="post" action="./registration">
                     <fieldset class="col-lg-10">
 
                         <% if (session.getAttribute("error") != null) { %>

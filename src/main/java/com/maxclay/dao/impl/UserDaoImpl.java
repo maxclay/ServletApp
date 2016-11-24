@@ -5,11 +5,7 @@ import com.maxclay.model.User;
 import com.maxclay.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import java.util.Optional;
+import org.hibernate.criterion.Restrictions;
 
 /**
  * @author maxclay
@@ -64,18 +60,15 @@ public class UserDaoImpl implements UserDao {
         return user;
     }
 
-    public Optional<User> getByEmail(String email) {
+    // TODO get rid of deprecated method invocation
+    public User getByEmail(String email) {
 
-//        Session session = HibernateUtil.openSession();
-//        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-//        CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
-//        Root<User> personRoot = criteriaQuery.from(User.class);
-//        criteriaQuery.select(personRoot);
-//        criteriaQuery.where(criteriaBuilder.equal(personRoot.get(User_.email), email));
-//        Optional<User> userOptional = session.createQuery(criteriaQuery).uniqueResultOptional();
-//        session.close();
+        Session session = HibernateUtil.openSession();
+        User user = (User) session.createCriteria(User.class)
+                .add(Restrictions.eq("email", email))
+                .uniqueResult();
 
-        return null;
+        return user;
     }
 
 }
