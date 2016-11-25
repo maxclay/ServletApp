@@ -65,12 +65,12 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>VendorsForm</servlet-name>
+        <servlet-name>VendorForm</servlet-name>
         <jsp-file>/create-vendor.jsp</jsp-file>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>VendorsForm</servlet-name>
+        <servlet-name>VendorForm</servlet-name>
         <url-pattern>/create-vendor</url-pattern>
     </servlet-mapping>
 
@@ -105,13 +105,33 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>VehiclesForm</servlet-name>
+        <servlet-name>VehicleForm</servlet-name>
         <jsp-file>/create-vehicle.jsp</jsp-file>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>VehiclesForm</servlet-name>
+        <servlet-name>VehicleForm</servlet-name>
         <url-pattern>/create-vehicle</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Materials</servlet-name>
+        <jsp-file>/materials.jsp</jsp-file>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Materials</servlet-name>
+        <url-pattern>/materials</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>MaterialForm</servlet-name>
+        <jsp-file>/create-material.jsp</jsp-file>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>MaterialForm</servlet-name>
+        <url-pattern>/create-material</url-pattern>
     </servlet-mapping>
 
 </web-app>

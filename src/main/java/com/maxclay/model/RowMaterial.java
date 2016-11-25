@@ -1,5 +1,7 @@
 package com.maxclay.model;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 
 /**
@@ -22,7 +24,7 @@ public class RowMaterial {
     @Column(name = "weight")
     private Double weight;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "vendor")
     private Vendor vendor;
 
